@@ -1,0 +1,24 @@
+{
+  "name": "z-services",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "node scripts/update-version.cjs && vite build",
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "preview-build": "vite build && pm2 restart pwa-serve || pm2 start --name \"pwa-serve\" -- run preview"
+  },
+  "dependencies": {
+    "dexie": "^3.2.4",
+    "vue": "^3.4.0",
+    "vue-router": "^4.3.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.0",
+    "playwright": "^1.40.0",
+    "vite": "^5.0.0",
+    "vite-plugin-pwa": "^0.17.0"
+  }
+}
