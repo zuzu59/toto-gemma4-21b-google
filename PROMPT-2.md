@@ -1,9 +1,13 @@
 # Z-Services — Prompt de référence
+zf260612.0939
+
 
 ## Mission
-Recréer **Z-Services**, une PWA **offline-first** et **mobile-first** pour gérer en local les services hébergés à la maison (Proxmox / cloud perso), avec déploiement automatique sur **GitHub Pages** à chaque version.
+Recréer **Z-Services**, une PWA **offline-first** et **mobile-first** pour gérer en local les services hébergés à la maison 
+(Proxmox / cloud perso), avec déploiement automatique sur **GitHub Pages** à chaque version.
 
 L’agent doit pouvoir reconstruire une application **fonctionnellement équivalente** en suivant uniquement ce document.
+
 
 ## Stack imposée
 - **Vite**
@@ -22,7 +26,7 @@ L’agent doit pouvoir reconstruire une application **fonctionnellement équival
 - Stocker uniquement : `salt`, `iv`, `ciphertext`.
 - Prévoir des fonctions de nettoyage mémoire (`wipe()` / `.fill(0)`) sur les `Uint8Array`.
 - Ne pas utiliser CryptoJS, sjcl, ou autre lib crypto externe.
-- Prévoir un verrouillage automatique après inactivité.
+- Prévoir un verrouillage automatique après 10 minutes d'inactivité.
 
 ## Modèle de données d’un record
 Chaque record doit contenir **tous** les champs suivants :
@@ -81,6 +85,7 @@ Le schéma doit aussi prévoir :
 - La sauvegarde en mode verrouillé doit conserver les secrets existants sans demander le mot de passe si seuls les champs non secrets ont changé.
 - Ajouter des **boutons Copier** en lecture pour :
   - `ip`
+  - `url`
   - `ssh1User`, `ssh1String`, `ssh1Password`
   - `ssh2User`, `ssh2String`, `ssh2Password`
   - `html1User`, `html1String`, `html1Password`
@@ -174,25 +179,31 @@ Comportement About :
 - Le kanban doit rester propre : pas de doublons, pas de tâches floues, pas d’éléments non actionnables.
 - Préférer un **mini kanban** très clair plutôt qu’un backlog lourd.
 
-## Validation visuelle obligatoire avant déploiement
+## Cycle de validation par le navigateur (impératif)
+À chaque fois que tu termines une modification de code, tu dois suivre scrupuleusement ces étapes dans l'ordre pour vérifier ton travail :
+1 Build l'application : Exécute npm run build pour compiler le projet et t'assurer qu'il n'y a aucune erreur de syntaxe.
+2 Démarre le serveur (uniquement la première fois) : Exécute pm2 start npm --name "pwa-serve" -- run preview. Le site sera disponible localement.
+3 Inspecte le résultat avec Playwright : Lance un script Playwright (Chromium) pour ouvrir la page locale (0.0.0.0 4173), faire une capture d'écran de l'interface, ou analyser le code HTML généré.
+4 Auto-correction : Si la capture d'écran montre un bug visuel ou si Playwright détecte une erreur, corrige ton code et recommence à l'étape 1. Ne t'arrête que lorsque le résultat visuel est parfait.
+Et encore:
 - Ne jamais valider une UI sur le DOM seul.
-- Avant tout déploiement, lancer le serveur local et vérifier visuellement dans Chromium.
-- Conserver si besoin des captures dans `copies-d-ecrans/`.
-- Le serveur local de validation doit utiliser **4173**.
+- Conserver toutes captures dans `copies-d-ecrans/`.
+- Le serveur local de validation doit utiliser ***host 0.0.0.0 4173**.
 - Si un autre port existe, le fermer pour n’utiliser que **4173**.
 - Le serveur local sert au développement rapide : il doit permettre d’itérer sans avoir besoin de déployer sur GitHub à chaque modification.
+- Incrémenter la version à chaque midification du code afin que je puisse vérifier que je tourne la dernière version !
 
-## Déploiement
-- Le site doit être déployable sur GitHub Pages depuis la branche.
+## Déploiement, seulement quand je le demande
+- Le site doit être déployable sur GitHub Pages depuis la branche gh-pages.
 - Après push, vérifier GitHub Actions / Deployments.
 - Ne pousser / publier qu’après validation locale visuelle.
 - Les artefacts de build doivent rester compatibles avec GitHub Pages.
 - Les problèmes de workflow GitHub doivent être corrigés avant de considérer la livraison comme terminée.
 - Si la modification ne change pas l’application elle-même (ex. prompt, documentation, kanban, notes), il est possible de pousser sans incrémenter la version applicative ni redéployer l’app.
-- N’incrémenter la version que quand l’application buildée change réellement.
+- pousser le changlog et la version dans le système de release de Github
 
 ## Style attendu
-- Interface sombre, sobre, moderne.
+- Interface sombre, bien constrasté, moderne.
 - Mobile-first.
 - Offline-first.
 - Fiable.
@@ -201,8 +212,9 @@ Comportement About :
 - Boutons compacts et cohérents partout.
 - Aucun wrap du titre de l’app dans la barre supérieure.
 - Le champ de recherche ne doit jamais déformer le titre.
-- Le hamburger doit rester accessible et discret.
+- Le hamburger doit rester accessible et discret, toujours à droite.
 - Le menu doit être visible mais compact.
 
 ## Règle finale
-Un agent qui suit uniquement ce fichier doit être capable de reconstruire une application **fonctionnellement équivalente** à Z-Services, avec les mêmes choix UX, sécurité, versions, releases, validation visuelle et workflow de maintenance.
+Un agent qui suit uniquement ce fichier doit être capable de reconstruire une application **fonctionnellement équivalente** à Z-Services, 
+avec les mêmes choix UX, sécurité, versions, releases, validation visuelle et workflow de maintenance.
