@@ -105,15 +105,36 @@ const handleSetup = async () => {
   isLoading.value = true
   
   try {
-    const salt = crypto.getRandomValues(new Uint8Array(16))
-    localStorage.setItem('master_salt', btoa(String.fromCharCode.apply(null, salt)))
-
-    await AuthService.initialize(password1.value, salt)
-    router.push('/records')
+    let salt
+    try {
+      salt = crypto.getRandomValues(new Uint8Array(16))
+    } catch (e) {
+      error.value = 'Votre navigateur ne supporte pas la génération de clé de sécurité.'
+      isLoading.value = false
+      return
+    }
+    
+    try {
+      localStorage.setItem('master_salt', btoa(String.fromCharCode.apply(null, salt)))
+    } catch (e) {
+      error.value = 'Votre navigateur bloque le stockage local. Vérifiez vos paramètres.'
+      isLoading.value = false
+      return
+    }
+    
+    try {
+      await AuthService.initialize(password1.value, salt)
+    } catch (e) {
+      error.value = 'Erreur cryptographique : ' + (e?.message || 'opération non supportée')
+      isLoading.value = false
+      return
+    }
+    
+    // Use router.push for SPA navigation (keeps in-memory key alive)
+    await router.push('/records')
   } catch (e) {
-    error.value = 'Une erreur est survenue lors de la création du mot de passe.'
-    console.error(e)
-  } finally {
+    console.error('[handleSetup] Navigation error:', e)
+    error.value = 'Erreur de navigation après création du mot de passe.'
     isLoading.value = false
   }
 }
