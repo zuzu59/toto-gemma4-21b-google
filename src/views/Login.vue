@@ -2,34 +2,115 @@
   <div class="login-container">
     <div class="login-card">
       <h1>Z-Services</h1>
-      <p>Entrez votre mot de passe maître pour déverrouiller l'application.</p>
-      <form @submit.prevent="handleLogin">
-        <div class="form-group">
-          <label for="password">Mot de passe Maître</label>
-          <input 
-            id="password" 
-            type="password" 
-            v-model="password" 
-            placeholder="••••••••"
-            required
-          />
-        </div>
-        <button type="submit" :disabled="isLoading">Déverrouiller</button>
-      </form>
+      
+      <!-- First-time setup -->
+      <template v-if="isSetupMode">
+        <p>Créez votre mot de passe maître pour la première fois.</p>
+        <form @submit.prevent="handleSetup">
+          <div class="form-group">
+            <label for="password1">Mot de passe maître</label>
+            <div class="input-wrapper">
+              <input 
+                :id="'password1'" 
+                :type="showPassword1 ? 'text' : 'password'" 
+                v-model="password1" 
+                placeholder="••••••••"
+                required
+              />
+              <button type="button" class="toggle-visibility" @click="showPassword1 = !showPassword1">
+                {{ showPassword1 ? '🙈' : '👁' }}
+              </button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="password2">Confirmez le mot de passe maître</label>
+            <div class="input-wrapper">
+              <input 
+                id="password2" 
+                :type="showPassword2 ? 'text' : 'password'" 
+                v-model="password2" 
+                placeholder="••••••••"
+                required
+              />
+              <button type="button" class="toggle-visibility" @click="showPassword2 = !showPassword2">
+                {{ showPassword2 ? '🙈' : '👁' }}
+              </button>
+            </div>
+            <small v-if="password1 && password2 && password1 !== password2" class="match-error">Les mots de passe ne correspondent pas.</small>
+          </div>
+          <button type="submit" :disabled="isLoading || password1 !== password2 || !password1 || !password2">
+            Créer mon mot de passe
+          </button>
+        </form>
+      </template>
+      
+      <!-- Regular login -->
+      <template v-else>
+        <p>Entrez votre mot de passe maître pour déverrouiller l'application.</p>
+        <form @submit.prevent="handleLogin">
+          <div class="form-group">
+            <label for="password">Mot de passe Maître</label>
+            <div class="input-wrapper">
+              <input 
+                id="password" 
+                :type="showPassword ? 'text' : 'password'" 
+                v-model="password" 
+                placeholder="••••••••"
+                required
+              />
+              <button type="button" class="toggle-visibility" @click="showPassword = !showPassword">
+                {{ showPassword ? '🙈' : '👁' }}
+              </button>
+            </div>
+          </div>
+          <button type="submit" :disabled="isLoading">Déverrouiller</button>
+        </form>
+      </template>
+      
       <div v-if="error" class="error">{{ error }}</div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { AuthService } from '../services/auth'
 import { useRouter } from 'vue-router'
 
+const router = useRouter()
+
+// State
+const isSetupMode = ref(false)
 const password = ref('')
+const password1 = ref('')
+const password2 = ref('')
 const isLoading = ref(false)
 const error = ref('')
-const router = useRouter()
+const showPassword = ref(false)
+const showPassword1 = ref(false)
+const showPassword2 = ref(false)
+
+onMounted(() => {
+  isSetupMode.value = !localStorage.getItem('master_salt')
+})
+
+const handleSetup = async () => {
+  error.value = ''
+  isLoading.value = true
+  
+  try {
+    const salt = crypto.getRandomValues(new Uint8Array(16))
+    localStorage.setItem('master_salt', btoa(String.fromCharCode.apply(null, salt)))
+
+    await AuthService.initialize(password1.value, salt)
+    router.push('/records')
+  } catch (e) {
+    error.value = 'Une erreur est survenue lors de la création du mot de passe.'
+    console.error(e)
+  } finally {
+    isLoading.value = false
+  }
+}
 
 const handleLogin = async () => {
   error.value = ''
@@ -94,14 +175,33 @@ p {
   margin-bottom: 0.5rem;
   color: #fff;
 }
-input {
+.input-wrapper {
+  position: relative;
+}
+.input-wrapper input {
   width: 100%;
   padding: 0.8rem;
+  padding-right: 3rem;
   border-radius: 4px;
   border: 1px solid #333;
   background: #2c2c2c;
   color: #fff;
   box-sizing: border-box;
+}
+.toggle-visibility {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 4px;
+  opacity: 0.7;
+}
+.toggle-visibility:hover {
+  opacity: 1;
 }
 button {
   width: 100%;
@@ -120,5 +220,11 @@ button:disabled {
   color: #f44336;
   margin-top: 1rem;
   font-size: 0.9rem;
+}
+.match-error {
+  color: #f44336;
+  font-size: 0.8rem;
+  display: block;
+  margin-top: 4px;
 }
 </style>

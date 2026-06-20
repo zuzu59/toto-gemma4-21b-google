@@ -19,12 +19,13 @@
     </div>
   </nav>
   
-  <div v-if="isDrawerOpen" class="drawer" @click.self="toggleDrawer">
+  <div v-show="isDrawerOpen" class="drawer" @click.self="toggleDrawer">
     <div class="drawer-content">
       <button @click="$router.push('/tags')">Tags</button>
       <button @click="$router.push('/tools')">Outils</button>
       <button @click="$router.push('/help')">Aide</button>
       <button @click="$router.push('/about')">À propos</button>
+      <button class="danger" @click="handleResetFactory">⚠ Réinitialisation usine</button>
     </div>
   </div>
 </template>
@@ -41,6 +42,24 @@ const toggleDrawer = () => {
 
 const handleSearch = () => {
   // To be implemented: global search logic
+}
+
+const handleResetFactory = () => {
+  if (confirm('⚠ ATTENTION : toutes les données seront supprimées définitivement (services, tags, outils, mots de passe). Continuer ?')) {
+    // Wipe in-memory key
+    window.__MASTER_KEY__ = undefined
+    
+    // Clear all localStorage
+    localStorage.clear()
+    
+    // Clear Dexie DB
+    if (window.__DB__) {
+      window.__DB__?.delete().catch(() => {})
+    }
+    
+    // Navigate to login
+    window.location.href = '/'
+  }
 }
 </script>
 
@@ -90,12 +109,6 @@ const handleSearch = () => {
   border-left: 1px solid var(--border-color);
   z-index: 1000;
   padding: 1rem;
-  transition: transform 0.3s ease;
-  transform: translateX(100%);
-}
-
-.drawer.open {
-  transform: translateX(0);
 }
 
 .drawer-content {
@@ -108,6 +121,17 @@ const handleSearch = () => {
   text-align: left;
   width: 100%;
   height: 40px;
+}
+
+.drawer-content button.danger {
+  background: #b71c1c;
+  color: #fff;
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+
+.drawer-content button.danger:hover {
+  background: #d32f2f;
 }
 
 @media (max-width: 600px) {
