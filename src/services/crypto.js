@@ -1,6 +1,9 @@
 const ITERATIONS = 600000;
 const KEY_LENGTH = 256;
 
+// Check if Web Crypto API is available (requires secure context: HTTPS, localhost, or 127.0.0.1)
+const cryptoAvailable = typeof crypto !== 'undefined' && crypto.subtle !== undefined;
+
 export const CryptoService = {
   /**
    * Derives a master key from a password and salt.
@@ -9,6 +12,12 @@ export const CryptoService = {
    * @returns {Promise<CryptoKey>}
    */
   async deriveKey(password, salt) {
+    if (!cryptoAvailable) {
+      throw new Error(
+        'Votre navigateur ne permet pas la sécurité avancée. '
+        + 'Utilisez http://127.0.0.1:4173 ou activez HTTPS.'
+      );
+    }
     const encoder = new TextEncoder();
     const baseKey = await crypto.subtle.importKey(
       'raw',
