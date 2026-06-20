@@ -14,21 +14,11 @@ export default defineConfig({
         description: 'Gestion des services hébergés à la maison',
         theme_color: '#121212',
         icons: [
-          {
-            src: 'icon-192x192.png',
-            sizes: '192x192',
-            type: 'image/png',
-          },
-          {
-            src: 'icon-512x512.png',
-            sizes: '512x512',
-            type: 'image/png',
-          },
+          { src: 'icon-192x192.png', sizes: '192x192', type: 'image/png' },
+          { src: 'icon-512x512.png', sizes: '512x512', type: 'image/png' },
         ],
       },
-      build: {
-        overlay: true,
-      },
+      build: { overlay: true },
     }),
   ],
   build: {
@@ -39,7 +29,7 @@ export default defineConfig({
     },
   },
   server: {
-    host: '0.0.0.0',
+    host: '127.0.0.1',
     port: 4173,
   },
 })
