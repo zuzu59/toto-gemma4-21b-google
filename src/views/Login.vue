@@ -17,9 +17,11 @@
                 placeholder="••••••••"
                 required
               />
-              <button type="button" class="toggle-visibility" @click="showPassword1 = !showPassword1">
-                {{ showPassword1 ? '🙈' : '👁' }}
-              </button>
+              <div class="toggle-wrapper">
+                <button type="button" class="toggle-visibility" @click="showPassword1 = !showPassword1">
+                  {{ showPassword1 ? '🙈' : '👁' }}
+                </button>
+              </div>
             </div>
           </div>
           <div class="form-group">
@@ -32,9 +34,11 @@
                 placeholder="••••••••"
                 required
               />
-              <button type="button" class="toggle-visibility" @click="showPassword2 = !showPassword2">
-                {{ showPassword2 ? '🙈' : '👁' }}
-              </button>
+              <div class="toggle-wrapper">
+                <button type="button" class="toggle-visibility" @click="showPassword2 = !showPassword2">
+                  {{ showPassword2 ? '🙈' : '👁' }}
+                </button>
+              </div>
             </div>
             <small v-if="password1 && password2 && password1 !== password2" class="match-error">Les mots de passe ne correspondent pas.</small>
           </div>
@@ -58,9 +62,11 @@
                 placeholder="••••••••"
                 required
               />
-              <button type="button" class="toggle-visibility" @click="showPassword = !showPassword">
-                {{ showPassword ? '🙈' : '👁' }}
-              </button>
+              <div class="toggle-wrapper">
+                <button type="button" class="toggle-visibility" @click="showPassword = !showPassword">
+                  {{ showPassword ? '🙈' : '👁' }}
+                </button>
+              </div>
             </div>
           </div>
           <button type="submit" :disabled="isLoading">Déverrouiller</button>
@@ -188,20 +194,32 @@ p {
   color: #fff;
   box-sizing: border-box;
 }
-.toggle-visibility {
+.toggle-wrapper {
   position: absolute;
-  right: 8px;
+  right: 4px;
   top: 50%;
   transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  pointer-events: none;
+}
+.toggle-visibility {
+  width: 100%;
+  height: 100%;
   background: none;
   border: none;
   cursor: pointer;
   font-size: 1.2rem;
-  padding: 4px;
   opacity: 0.7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  pointer-events: auto;
 }
 .toggle-visibility:hover {
   opacity: 1;
+  background: rgba(255,255,255,0.1);
 }
 button {
   width: 100%;
