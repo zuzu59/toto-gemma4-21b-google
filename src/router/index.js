@@ -11,7 +11,7 @@ import { AuthService } from '../services/auth'
 const routes = [
   {
     path: '/',
-    name: 'Login',
+    name: 'Home',
     component: Login,
   },
   {
@@ -69,5 +69,9 @@ router.beforeEach((to, from, next) => {
     next()
   }
 })
+
+router.afterEach((to, from) => {})
+
+router.onError((error) => {})
 
 export default router

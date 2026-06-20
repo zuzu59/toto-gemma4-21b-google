@@ -24,7 +24,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { APP_VERSION } from './version.js'
+import { APP_VERSION } from '../version.js'
 
 const appVersion = ref(APP_VERSION)
 const changelogUrl = 'https://github.com/zuzu59/z-services/blob/main/CHANGELOG.md'
