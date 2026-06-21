@@ -4,12 +4,8 @@ function updateVersionFile() {
   const data = JSON.parse(fs.readFileSync('./version.json', 'utf8'));
   const parts = data.version.split('.').map(Number);
   
-  if (parts[parts.length - 1] < 9) {
-    parts[parts.length - 1]++;
-  } else {
-    parts[parts.length - 2]++;
-    parts[parts.length - 1] = 0;
-  }
+  // Incrémente uniquement la position z (dernière)
+  parts[parts.length - 1]++;
   
   const newVersion = parts.join('.');
   fs.writeFileSync('./version.json', JSON.stringify({ version: newVersion }, null, 2));
