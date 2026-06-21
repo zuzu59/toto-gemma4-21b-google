@@ -26,6 +26,12 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
+    path: '/record',
+    name: 'RecordCreate',
+    component: RecordDetail,
+    meta: { requiresAuth: true },
+  },
+  {
     path: '/record/:id',
     name: 'RecordDetail',
     component: RecordDetail,

@@ -1,16 +1,16 @@
 <template>
   <div class="page">
-    <div v-if="!record" class="empty-state">
+    <div v-if="!record && !isEditing" class="empty-state">
       <button @click="$router.push('/records')">Retour aux records</button>
     </div>
     
     <div v-else>
       <div class="header">
-        <h1>{{ record.serviceName || 'Nouveau Service' }}</h1>
+        <h1>{{ record?.serviceName || 'Nouveau Service' }}</h1>
         <div class="actions">
           <button v-if="viewMode" @click="switchMode" class="btn-edit">Modifier</button>
           <button v-else @click="saveRecord" class="btn-success">Enregistrer</button>
-          <button @click="deleteRecord" class="btn-danger" v-if="record.id">Supprimer</button>
+          <button @click="deleteRecord" class="btn-danger" v-if="record?.id">Supprimer</button>
         </div>
       </div>
 
@@ -179,6 +179,7 @@ const formData = reactive({})
 const tagInput = ref('')
 const isLocked = ref(false)
 const isEditingSecret = ref(false)
+const isEditing = ref(false) // true when creating new record (no id)
 let autoLockTimer = null
 
 onMounted(async () => {
@@ -194,7 +195,10 @@ onMounted(async () => {
       resetFormData()
     }
   } else {
+    // Creating a new record — show form in edit mode
     resetFormData()
+    isEditing.value = true
+    viewMode.value = false
   }
 
   setupAutoLock()
@@ -291,8 +295,29 @@ const saveRecord = async () => {
     }
   }
 
-  // Clone data for persistence to avoid Vue proxy issues
-  const dataToSave = { ...formData, createdAt: formData.createdAt || new Date().toISOString(), modifiedAt: new Date().toISOString() }
+  // Convert Vue reactive object to plain object for IndexedDB
+  const dataToSave = {
+    serviceName: formData.serviceName,
+    ip: formData.ip,
+    url: formData.url,
+    description: formData.description,
+    note: formData.note,
+    tagIds: Array.isArray(formData.tagIds) ? [...formData.tagIds] : [],
+    ssh1User: formData.ssh1User,
+    ssh1Password: formData.ssh1Password,
+    ssh1String: formData.ssh1String,
+    ssh2User: formData.ssh2User,
+    ssh2Password: formData.ssh2Password,
+    ssh2String: formData.ssh2String,
+    html1User: formData.html1User,
+    html1Password: formData.html1Password,
+    html1String: formData.html1String,
+    html2User: formData.html2User,
+    html2Password: formData.html2Password,
+    html2String: formData.html2String,
+    createdAt: formData.createdAt || new Date().toISOString(),
+    modifiedAt: new Date().toISOString(),
+  }
   
   if (record.value?.id) {
     await db.records.update(Number(record.value.id), dataToSave)

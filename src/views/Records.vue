@@ -136,7 +136,7 @@ const goToRecord = (id) => {
 }
 
 const goToCreate = () => {
-  router.push({ name: 'RecordDetail' })
+  router.push('/record')
 }
 </script>
 
