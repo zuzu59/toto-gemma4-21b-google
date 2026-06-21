@@ -17,19 +17,25 @@
       <div class="form-grid">
         <div class="field">
           <label>Nom du service</label>
-          <input v-if="!viewMode" v-model="formData.serviceName" type="text" />
-          <span v-else>{{ formData.serviceName }}</span>
+          <div v-if="!viewMode">
+            <input v-model="formData.serviceName" type="text" />
+            <button v-if="formData.serviceName" @click="copyToClipboard(formData.serviceName, $event.target)" class="btn-copy">Copier</button>
+          </div>
+          <span v-else>
+            {{ formData.serviceName }}
+            <button v-if="formData.serviceName" @click="copyToClipboard(formData.serviceName, $event.target)" class="btn-copy">Copier</button>
+          </span>
         </div>
 
         <div class="field">
           <label>IP</label>
           <div v-if="!viewMode">
             <input v-model="formData.ip" type="text" />
-            <button @click="copyToClipboard(formData.ip)" class="btn-copy">{{ formData.ip ? 'Copier' : '' }}</button>
+            <button v-if="formData.ip" @click="copyToClipboard(formData.ip, $event.target)" class="btn-copy">Copier</button>
           </div>
           <span v-else>
             {{ formData.ip }}
-            <button v-if="formData.ip" @click="copyToClipboard(formData.ip)" class="btn-copy">Copier</button>
+            <button v-if="formData.ip" @click="copyToClipboard(formData.ip, $event.target)" class="btn-copy">Copier</button>
           </span>
         </div>
 
@@ -37,11 +43,11 @@
           <label>URL</label>
           <div v-if="!viewMode">
             <input v-model="formData.url" type="text" />
-            <button @click="copyToClipboard(formData.url)" class="btn-copy">{{ formData.url ? 'Copier' : '' }}</button>
+            <button v-if="formData.url" @click="copyToClipboard(formData.url, $event.target)" class="btn-copy">Copier</button>
           </div>
           <span v-else>
             {{ formData.url }}
-            <button v-if="formData.url" @click="copyToClipboard(formData.url)" class="btn-copy">Copier</button>
+            <button v-if="formData.url" @click="copyToClipboard(formData.url, $event.target)" class="btn-copy">Copier</button>
           </span>
         </div>
 
@@ -79,84 +85,144 @@
         <div class="form-grid">
           <div class="field">
             <label>SSH 1 User</label>
-            <input v-if="!viewMode" v-model="formData.ssh1User" type="text" />
-            <span v-else>{{ formData.ssh1User }}</span>
+            <div v-if="!viewMode">
+              <input v-model="formData.ssh1User" type="text" />
+              <button v-if="formData.ssh1User" @click="copyToClipboard(formData.ssh1User, $event.target)" class="btn-copy">Copier</button>
+            </div>
+            <span v-else>
+              {{ formData.ssh1User }}
+              <button v-if="formData.ssh1User" @click="copyToClipboard(formData.ssh1User, $event.target)" class="btn-copy">Copier</button>
+            </span>
           </div>
           <div class="field">
             <label>SSH 1 Pass</label>
             <div v-if="!viewMode">
               <input v-if="!isLocked || isEditingSecret" v-model="formData.ssh1Password" type="password" />
               <span v-else>🔒 Verrouillé</span>
-              <button @click="copyToClipboard(formData.ssh1Password)" class="btn-copy">{{ formData.ssh1Password ? 'Copier' : '' }}</button>
+              <button v-if="formData.ssh1Password && (!isLocked || isEditingSecret)" @click="copyToClipboard(formData.ssh1Password, $event.target)" class="btn-copy">Copier</button>
             </div>
-            <span v-else>********</span>
+            <span v-else>
+              ********
+              <button v-if="formData.ssh1Password" @click="copyToClipboard(formData.ssh1Password, $event.target)" class="btn-copy">Copier</button>
+            </span>
           </div>
 
           <div class="field">
             <label>SSH 1 String</label>
-            <input v-if="!viewMode" v-model="formData.ssh1String" type="text" />
-            <span v-else>{{ formData.ssh1String }}</span>
+            <div v-if="!viewMode">
+              <input v-model="formData.ssh1String" type="text" />
+              <button v-if="formData.ssh1String" @click="copyToClipboard(formData.ssh1String, $event.target)" class="btn-copy">Copier</button>
+            </div>
+            <span v-else>
+              {{ formData.ssh1String }}
+              <button v-if="formData.ssh1String" @click="copyToClipboard(formData.ssh1String, $event.target)" class="btn-copy">Copier</button>
+            </span>
           </div>
           <div class="field">
             <label>SSH 2 User</label>
-            <input v-if="!viewMode" v-model="formData.ssh2User" type="text" />
-            <span v-else>{{ formData.ssh2User }}</span>
+            <div v-if="!viewMode">
+              <input v-model="formData.ssh2User" type="text" />
+              <button v-if="formData.ssh2User" @click="copyToClipboard(formData.ssh2User, $event.target)" class="btn-copy">Copier</button>
+            </div>
+            <span v-else>
+              {{ formData.ssh2User }}
+              <button v-if="formData.ssh2User" @click="copyToClipboard(formData.ssh2User, $event.target)" class="btn-copy">Copier</button>
+            </span>
           </div>
           <div class="field">
             <label>SSH 2 Pass</label>
             <div v-if="!viewMode">
               <input v-if="!isLocked || isEditingSecret" v-model="formData.ssh2Password" type="password" />
               <span v-else>🔒 Verrouillé</span>
-              <button @click="copyToClipboard(formData.ssh2Password)" class="btn-copy">{{ formData.ssh2Password ? 'Copier' : '' }}</button>
+              <button v-if="formData.ssh2Password && (!isLocked || isEditingSecret)" @click="copyToClipboard(formData.ssh2Password, $event.target)" class="btn-copy">Copier</button>
             </div>
-            <span v-else>********</span>
+            <span v-else>
+              ********
+              <button v-if="formData.ssh2Password" @click="copyToClipboard(formData.ssh2Password, $event.target)" class="btn-copy">Copier</button>
+            </span>
           </div>
 
           <div class="field">
             <label>SSH 2 String</label>
-            <input v-if="!viewMode" v-model="formData.ssh2String" type="text" />
-            <span v-else>{{ formData.ssh2String }}</span>
+            <div v-if="!viewMode">
+              <input v-model="formData.ssh2String" type="text" />
+              <button v-if="formData.ssh2String" @click="copyToClipboard(formData.ssh2String, $event.target)" class="btn-copy">Copier</button>
+            </div>
+            <span v-else>
+              {{ formData.ssh2String }}
+              <button v-if="formData.ssh2String" @click="copyToClipboard(formData.ssh2String, $event.target)" class="btn-copy">Copier</button>
+            </span>
           </div>
 
           <div class="field">
             <label>HTML 1 User</label>
-            <input v-if="!viewMode" v-model="formData.html1User" type="text" />
-            <span v-else>{{ formData.html1User }}</span>
+            <div v-if="!viewMode">
+              <input v-model="formData.html1User" type="text" />
+              <button v-if="formData.html1User" @click="copyToClipboard(formData.html1User, $event.target)" class="btn-copy">Copier</button>
+            </div>
+            <span v-else>
+              {{ formData.html1User }}
+              <button v-if="formData.html1User" @click="copyToClipboard(formData.html1User, $event.target)" class="btn-copy">Copier</button>
+            </span>
           </div>
           <div class="field">
             <label>HTML 1 Pass</label>
             <div v-if="!viewMode">
               <input v-if="!isLocked || isEditingSecret" v-model="formData.html1Password" type="password" />
               <span v-else>🔒 Verrouillé</span>
-              <button @click="copyToClipboard(formData.html1Password)" class="btn-copy">{{ formData.html1Password ? 'Copier' : '' }}</button>
+              <button v-if="formData.html1Password && (!isLocked || isEditingSecret)" @click="copyToClipboard(formData.html1Password, $event.target)" class="btn-copy">Copier</button>
             </div>
-            <span v-else>********</span>
+            <span v-else>
+              ********
+              <button v-if="formData.html1Password" @click="copyToClipboard(formData.html1Password, $event.target)" class="btn-copy">Copier</button>
+            </span>
           </div>
 
           <div class="field">
             <label>HTML 1 String</label>
-            <input v-if="!viewMode" v-model="formData.html1String" type="text" />
-            <span v-else>{{ formData.html1String }}</span>
+            <div v-if="!viewMode">
+              <input v-model="formData.html1String" type="text" />
+              <button v-if="formData.html1String" @click="copyToClipboard(formData.html1String, $event.target)" class="btn-copy">Copier</button>
+            </div>
+            <span v-else>
+              {{ formData.html1String }}
+              <button v-if="formData.html1String" @click="copyToClipboard(formData.html1String, $event.target)" class="btn-copy">Copier</button>
+            </span>
           </div>
           <div class="field">
             <label>HTML 2 User</label>
-            <input v-if="!viewMode" v-model="formData.html2User" type="text" />
-            <span v-else>{{ formData.html2User }}</span>
+            <div v-if="!viewMode">
+              <input v-model="formData.html2User" type="text" />
+              <button v-if="formData.html2User" @click="copyToClipboard(formData.html2User, $event.target)" class="btn-copy">Copier</button>
+            </div>
+            <span v-else>
+              {{ formData.html2User }}
+              <button v-if="formData.html2User" @click="copyToClipboard(formData.html2User, $event.target)" class="btn-copy">Copier</button>
+            </span>
           </div>
           <div class="field">
             <label>HTML 2 Pass</label>
             <div v-if="!viewMode">
               <input v-if="!isLocked || isEditingSecret" v-model="formData.html2Password" type="password" />
               <span v-else>🔒 Verrouillé</span>
-              <button @click="copyToClipboard(formData.html2Password)" class="btn-copy">{{ formData.html2Password ? 'Copier' : '' }}</button>
+              <button v-if="formData.html2Password && (!isLocked || isEditingSecret)" @click="copyToClipboard(formData.html2Password, $event.target)" class="btn-copy">Copier</button>
             </div>
-            <span v-else>********</span>
+            <span v-else>
+              ********
+              <button v-if="formData.html2Password" @click="copyToClipboard(formData.html2Password, $event.target)" class="btn-copy">Copier</button>
+            </span>
           </div>
 
           <div class="field">
             <label>HTML 2 String</label>
-            <input v-if="!viewMode" v-model="formData.html2String" type="text" />
-            <span v-else>{{ formData.html2String }}</span>
+            <div v-if="!viewMode">
+              <input v-model="formData.html2String" type="text" />
+              <button v-if="formData.html2String" @click="copyToClipboard(formData.html2String, $event.target)" class="btn-copy">Copier</button>
+            </div>
+            <span v-else>
+              {{ formData.html2String }}
+              <button v-if="formData.html2String" @click="copyToClipboard(formData.html2String, $event.target)" class="btn-copy">Copier</button>
+            </span>
           </div>
         </div>
       </div>
@@ -268,14 +334,12 @@ const removeTag = (index) => {
   formData.tagIds.splice(index, 1)
 }
 
-const copyToClipboard = (text) => {
+const copyToClipboard = (text, btn) => {
   if (!text) return
-  const btn = event.target
   navigator.clipboard.writeText(text).then(() => {
-    const oldText = btn.innerText
     btn.innerText = 'Copié'
     setTimeout(() => {
-      btn.innerText = oldText
+      btn.innerText = 'Copier'
     }, 2000)
   })
 }
