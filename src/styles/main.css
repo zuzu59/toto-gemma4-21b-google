@@ -1,9 +1,12 @@
 :root {
   --bg-color: #121212;
-  --text-color: #e0e0e0;
-  --accent-color: #3700b3;
-  --border-color: #333;
-  --button-height: 32px;
+  --text-color: #ffffff;
+  --text-muted: #cccccc;
+  --accent-color: #4caf50;
+  --border-color: #555555;
+  --button-height: 36px;
+  --input-bg: #2a2a2a;
+  --input-border: #666666;
 }
 
 body {
@@ -33,11 +36,19 @@ button:active {
 }
 
 input, select, textarea {
-  background: #1e1e1e;
-  border: 1px solid var(--border-color);
-  color: white;
-  padding: 8px;
-  border-radius: 4px;
+  background: var(--input-bg);
+  border: 2px solid var(--input-border);
+  color: #ffffff;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.3);
 }
 
 a {

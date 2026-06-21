@@ -148,6 +148,8 @@ const goToCreate = () => {
   display: flex;
   justify-content: space-between;
   margin-bottom: 1rem;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 .search-input {
   width: 100%;
@@ -161,13 +163,29 @@ const goToCreate = () => {
   border-collapse: collapse;
 }
 .table-header th {
-  background: #222;
+  background: #2a2a2a;
   padding: 12px;
+  color: #ffffff;
+  font-weight: 700;
   border-bottom: 2px solid var(--border-color);
+  cursor: pointer;
+}
+.table-header th:hover {
+  background: #333;
 }
 .records-table td {
   padding: 10px;
+  color: #ffffff;
   border-bottom: 1px solid var(--border-color);
+}
+tr:nth-child(even) {
+  background: #1a1a1a;
+}
+tr:nth-child(odd) {
+  background: #222;
+}
+tr:hover {
+  background: #2a2a2a;
 }
 .pagination {
   margin-top: 1rem;
@@ -176,22 +194,64 @@ const goToCreate = () => {
   gap: 1rem;
   align-items: center;
 }
+.pagination button {
+  background: #2a2a2a;
+  border: 2px solid #666;
+  color: #ffffff;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.pagination button:hover:not(:disabled) {
+  background: #333;
+}
+.pagination span {
+  color: #ffffff;
+  font-weight: 600;
+}
 .btn-view {
   background: #2e7d32;
   border: none;
   padding: 4px 8px;
   border-radius: 4px;
   margin-right: 4px;
+  color: #ffffff;
+  font-weight: 600;
 }
 .btn-edit {
   background: #f57c00;
   border: none;
   padding: 4px 8px;
   border-radius: 4px;
+  color: #ffffff;
+  font-weight: 600;
 }
 .col-name { width: 30%; }
 .col-ip { width: 15%; }
 .col-url { width: 25%; }
 .col-date { width: 15%; }
 .col-actions { width: 10%; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .toolbar {
+    flex-direction: column;
+  }
+  .search-input {
+    max-width: 100%;
+  }
+  .records-table {
+    font-size: 14px;
+  }
+  .col-name { width: 25%; }
+  .col-ip { width: 20%; }
+  .col-url { width: 25%; }
+  .col-date { width: 15%; }
+  .col-actions { width: 15%; }
+}
 </style>

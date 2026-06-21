@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar">
     <div class="nav-left">
-      <h1 class="brand">Z-Services</h1>
+      <h1 class="brand" @click="goHome" style="cursor: pointer;">Z-Services</h1>
     </div>
     <div class="nav-right">
       <div class="search-container">
@@ -36,13 +36,19 @@
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const isDrawerOpen = ref(false)
 const searchQuery = ref('')
 const isOnline = ref(navigator.onLine)
 
 const toggleDrawer = () => {
   isDrawerOpen.value = !isDrawerOpen.value
+}
+
+const goHome = () => {
+  router.push('/')
 }
 
 const handleSearch = () => {
@@ -86,16 +92,20 @@ const handleResetFactory = () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem 1rem;
-  border-bottom: 1px solid var(--border-color);
+  padding: 0.75rem 1.5rem;
+  border-bottom: 2px solid var(--border-color);
   height: 60px;
   background-color: #1a1a1a;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .brand {
   margin: 0;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   white-space: nowrap;
+  color: #ffffff;
+  font-weight: 700;
+  letter-spacing: 0.5px;
 }
 
 .nav-right {
@@ -108,30 +118,30 @@ const handleResetFactory = () => {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.25rem 0.75rem;
+  padding: 0.35rem 0.85rem;
   border-radius: 20px;
-  background: #222;
-  border: 1px solid var(--border-color);
-  font-size: 0.8rem;
-  font-weight: bold;
-  color: #fff;
+  background: #2a2a2a;
+  border: 2px solid #666;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #ffffff;
 }
 
 .status-dot {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   flex-shrink: 0;
 }
 
 .status-dot.online {
   background: #4caf50;
-  box-shadow: 0 0 6px #4caf50;
+  box-shadow: 0 0 8px #4caf50;
 }
 
 .status-dot.offline {
   background: #f44336;
-  box-shadow: 0 0 6px #f44336;
+  box-shadow: 0 0 8px #f44336;
 }
 
 .status-text {
@@ -140,27 +150,55 @@ const handleResetFactory = () => {
 
 .search-container {
   flex-grow: 1;
-  max-width: 300px;
+  max-width: 350px;
 }
 
 .search-container input {
   width: 100%;
+  padding: 8px 12px;
+  border: 2px solid #666;
+  border-radius: 8px;
+  background: #2a2a2a;
+  color: #ffffff;
+  font-size: 14px;
+}
+
+.search-container input:focus {
+  outline: none;
+  border-color: #4caf50;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.3);
 }
 
 .hamburger {
   padding: 0 10px;
+  background: #2a2a2a;
+  border: 2px solid #666;
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 1.2rem;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hamburger:hover {
+  background: #333;
+  border-color: #888;
 }
 
 .drawer {
   position: fixed;
   top: 60px;
   right: 0;
-  width: 250px;
+  width: 280px;
   height: calc(100vh - 60px);
-  background-color: #1e1e1e;
-  border-left: 1px solid var(--border-color);
+  background-color: #2a2a2a;
+  border-left: 2px solid var(--border-color);
   z-index: 1000;
   padding: 1rem;
+  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.3);
 }
 
 .drawer-content {
@@ -172,23 +210,48 @@ const handleResetFactory = () => {
 .drawer-content button {
   text-align: left;
   width: 100%;
-  height: 40px;
+  height: 44px;
+  background: #333;
+  border: 2px solid #666;
+  color: #ffffff;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.drawer-content button:hover {
+  background: #444;
+  border-color: #888;
 }
 
 .drawer-content button.danger {
-  background: #b71c1c;
+  background: #c62828;
   color: #fff;
   font-weight: bold;
   margin-top: 0.5rem;
+  border-color: #e53935;
 }
 
 .drawer-content button.danger:hover {
   background: #d32f2f;
+  border-color: #ff5252;
 }
 
 @media (max-width: 600px) {
+  .navbar {
+    padding: 0.5rem 1rem;
+  }
+  .brand {
+    font-size: 1.1rem;
+  }
   .search-container {
-    max-width: 150px;
+    max-width: 120px;
+  }
+  .status-text {
+    display: none;
+  }
+  .status-indicator {
+    padding: 0.25rem 0.5rem;
   }
 }
 </style>

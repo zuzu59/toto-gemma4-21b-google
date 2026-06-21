@@ -132,7 +132,13 @@ const importConfigJSON = async () => {
 
 <style scoped>
 .page {
-  padding: 2rem;
+  padding: 1.5rem;
+}
+.page-title {
+  color: #ffffff;
+  font-size: 1.8rem;
+  margin-bottom: 2rem;
+  font-weight: 700;
 }
 .tools-grid {
   display: grid;
@@ -140,22 +146,35 @@ const importConfigJSON = async () => {
   gap: 2rem;
 }
 .tool-card {
-  border: 1px solid var(--border-color);
+  border: 2px solid var(--border-color);
   padding: 1.5rem;
-  border-radius: 8px;
-  background: #1e1e1e;
+  border-radius: 12px;
+  background: #2a2a2a;
 }
 .tool-card h3 {
   margin-top: 0;
   margin-bottom: 1rem;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 2px solid var(--border-color);
   padding-bottom: 0.5rem;
+  color: #ffffff;
+  font-size: 1.3rem;
+  font-weight: 700;
 }
-button {
+.tool-card button {
   display: block;
   width: 100%;
-  margin-bottom: 0.5rem;
-  padding: 10px;
+  margin-bottom: 0.75rem;
+  padding: 12px;
+  background: #333;
+  color: #ffffff;
+  border: 2px solid #666;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.tool-card button:hover {
+  background: #444;
+  border-color: #888;
 }
 .page-title {
   margin-bottom: 2rem;

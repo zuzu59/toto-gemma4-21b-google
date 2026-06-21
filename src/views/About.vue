@@ -50,28 +50,58 @@ onMounted(async () => {
 
 <style scoped>
 .page {
-  padding: 2rem;
+  padding: 1.5rem;
+}
+.page-title {
+  color: #ffffff;
+  font-size: 1.8rem;
+  margin-bottom: 2rem;
+  font-weight: 700;
 }
 .about-content {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  color: #ffffff;
+  font-size: 1rem;
+}
+.about-content p {
+  margin: 0;
+  line-height: 1.6;
+}
+.about-content a {
+  color: #64b5f6;
+  text-decoration: underline;
+}
+.about-content a:hover {
+  color: #90caf9;
 }
 .version-info {
   margin: 1rem 0;
-  padding: 1rem;
-  background: #1e1e1e;
-  border-radius: 8px;
+  padding: 1.5rem;
+  background: #2a2a2a;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  color: #ffffff;
+}
+.version-info p {
+  margin: 0 0 0.5rem 0;
+  font-weight: 600;
+}
+.version-info strong {
+  color: #4caf50;
+  font-size: 1.1rem;
 }
 .alert {
   color: #ff9800;
   font-weight: bold;
+  font-size: 1.1rem;
+  padding: 0.5rem;
+  background: rgba(255, 152, 0, 0.1);
+  border-radius: 8px;
 }
 .loading {
-  color: #aaa;
+  color: #cccccc;
   font-style: italic;
-}
-.page-title {
-  margin-bottom: 2rem;
 }
 </style>

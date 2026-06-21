@@ -48,10 +48,16 @@ const deleteTag = async (id) => {
 
 <style scoped>
 .page {
-  padding: 2rem;
+  padding: 1.5rem;
+}
+.page-title {
+  color: #ffffff;
+  font-size: 1.8rem;
+  margin-bottom: 2rem;
+  font-weight: 700;
 }
 .tag-management {
-  max-width: 400px;
+  max-width: 600px;
 }
 .form-group {
   display: flex;
@@ -68,16 +74,24 @@ const deleteTag = async (id) => {
 .tag-list li {
   display: flex;
   justify-content: space-between;
-  padding: 0.5rem;
+  padding: 1rem;
   border-bottom: 1px solid var(--border-color);
+  color: #ffffff;
+  font-weight: 500;
+}
+.tag-list li:hover {
+  background: #2a2a2a;
 }
 .btn-delete {
   background: none;
   border: none;
-  color: red;
+  color: #ff5252;
   cursor: pointer;
+  font-size: 1.2rem;
+  padding: 4px 8px;
+  border-radius: 4px;
 }
-.page-title {
-  margin-bottom: 2rem;
+.btn-delete:hover {
+  background: rgba(255, 82, 82, 0.2);
 }
 </style>

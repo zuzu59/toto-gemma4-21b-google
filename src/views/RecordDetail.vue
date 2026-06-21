@@ -97,12 +97,17 @@
           <div class="field">
             <label>SSH 1 Pass</label>
             <div v-if="!viewMode">
-              <input v-if="!isLocked || isEditingSecret" v-model="formData.ssh1Password" type="password" />
-              <span v-else>🔒 Verrouillé</span>
-              <button v-if="formData.ssh1Password && (!isLocked || isEditingSecret)" @click="copyToClipboard(formData.ssh1Password, $event.target)" class="btn-copy">Copier</button>
+              <div class="password-field">
+                <input v-if="!isLocked || isEditingSecret" :type="visiblePasswords.has('ssh1Password') ? 'text' : 'password'" v-model="formData.ssh1Password" />
+                <span v-else>🔒 Verrouillé</span>
+                <button v-if="formData.ssh1Password && (!isLocked || isEditingSecret)" @click="togglePassword('ssh1Password')" class="password-toggle">{{ visiblePasswords.has('ssh1Password') ? '🙈' : '👁' }}</button>
+                <button v-if="formData.ssh1Password && (!isLocked || isEditingSecret)" @click="copyToClipboard(formData.ssh1Password, $event.target)" class="btn-copy">Copier</button>
+              </div>
             </div>
-            <span v-else>
-              ********
+            <span v-else class="password-field">
+              <span v-if="!visiblePasswords.has('ssh1Password')">********</span>
+              <span v-else>{{ formData.ssh1Password }}</span>
+              <button v-if="formData.ssh1Password" @click="togglePassword('ssh1Password')" class="password-toggle">{{ visiblePasswords.has('ssh1Password') ? '🙈' : '👁' }}</button>
               <button v-if="formData.ssh1Password" @click="copyToClipboard(formData.ssh1Password, $event.target)" class="btn-copy">Copier</button>
             </span>
           </div>
@@ -132,12 +137,17 @@
           <div class="field">
             <label>SSH 2 Pass</label>
             <div v-if="!viewMode">
-              <input v-if="!isLocked || isEditingSecret" v-model="formData.ssh2Password" type="password" />
-              <span v-else>🔒 Verrouillé</span>
-              <button v-if="formData.ssh2Password && (!isLocked || isEditingSecret)" @click="copyToClipboard(formData.ssh2Password, $event.target)" class="btn-copy">Copier</button>
+              <div class="password-field">
+                <input v-if="!isLocked || isEditingSecret" :type="visiblePasswords.has('ssh2Password') ? 'text' : 'password'" v-model="formData.ssh2Password" />
+                <span v-else>🔒 Verrouillé</span>
+                <button v-if="formData.ssh2Password && (!isLocked || isEditingSecret)" @click="togglePassword('ssh2Password')" class="password-toggle">{{ visiblePasswords.has('ssh2Password') ? '🙈' : '👁' }}</button>
+                <button v-if="formData.ssh2Password && (!isLocked || isEditingSecret)" @click="copyToClipboard(formData.ssh2Password, $event.target)" class="btn-copy">Copier</button>
+              </div>
             </div>
-            <span v-else>
-              ********
+            <span v-else class="password-field">
+              <span v-if="!visiblePasswords.has('ssh2Password')">********</span>
+              <span v-else>{{ formData.ssh2Password }}</span>
+              <button v-if="formData.ssh2Password" @click="togglePassword('ssh2Password')" class="password-toggle">{{ visiblePasswords.has('ssh2Password') ? '🙈' : '👁' }}</button>
               <button v-if="formData.ssh2Password" @click="copyToClipboard(formData.ssh2Password, $event.target)" class="btn-copy">Copier</button>
             </span>
           </div>
@@ -168,12 +178,17 @@
           <div class="field">
             <label>HTML 1 Pass</label>
             <div v-if="!viewMode">
-              <input v-if="!isLocked || isEditingSecret" v-model="formData.html1Password" type="password" />
-              <span v-else>🔒 Verrouillé</span>
-              <button v-if="formData.html1Password && (!isLocked || isEditingSecret)" @click="copyToClipboard(formData.html1Password, $event.target)" class="btn-copy">Copier</button>
+              <div class="password-field">
+                <input v-if="!isLocked || isEditingSecret" :type="visiblePasswords.has('html1Password') ? 'text' : 'password'" v-model="formData.html1Password" />
+                <span v-else>🔒 Verrouillé</span>
+                <button v-if="formData.html1Password && (!isLocked || isEditingSecret)" @click="togglePassword('html1Password')" class="password-toggle">{{ visiblePasswords.has('html1Password') ? '🙈' : '👁' }}</button>
+                <button v-if="formData.html1Password && (!isLocked || isEditingSecret)" @click="copyToClipboard(formData.html1Password, $event.target)" class="btn-copy">Copier</button>
+              </div>
             </div>
-            <span v-else>
-              ********
+            <span v-else class="password-field">
+              <span v-if="!visiblePasswords.has('html1Password')">********</span>
+              <span v-else>{{ formData.html1Password }}</span>
+              <button v-if="formData.html1Password" @click="togglePassword('html1Password')" class="password-toggle">{{ visiblePasswords.has('html1Password') ? '🙈' : '👁' }}</button>
               <button v-if="formData.html1Password" @click="copyToClipboard(formData.html1Password, $event.target)" class="btn-copy">Copier</button>
             </span>
           </div>
@@ -203,12 +218,17 @@
           <div class="field">
             <label>HTML 2 Pass</label>
             <div v-if="!viewMode">
-              <input v-if="!isLocked || isEditingSecret" v-model="formData.html2Password" type="password" />
-              <span v-else>🔒 Verrouillé</span>
-              <button v-if="formData.html2Password && (!isLocked || isEditingSecret)" @click="copyToClipboard(formData.html2Password, $event.target)" class="btn-copy">Copier</button>
+              <div class="password-field">
+                <input v-if="!isLocked || isEditingSecret" :type="visiblePasswords.has('html2Password') ? 'text' : 'password'" v-model="formData.html2Password" />
+                <span v-else>🔒 Verrouillé</span>
+                <button v-if="formData.html2Password && (!isLocked || isEditingSecret)" @click="togglePassword('html2Password')" class="password-toggle">{{ visiblePasswords.has('html2Password') ? '🙈' : '👁' }}</button>
+                <button v-if="formData.html2Password && (!isLocked || isEditingSecret)" @click="copyToClipboard(formData.html2Password, $event.target)" class="btn-copy">Copier</button>
+              </div>
             </div>
-            <span v-else>
-              ********
+            <span v-else class="password-field">
+              <span v-if="!visiblePasswords.has('html2Password')">********</span>
+              <span v-else>{{ formData.html2Password }}</span>
+              <button v-if="formData.html2Password" @click="togglePassword('html2Password')" class="password-toggle">{{ visiblePasswords.has('html2Password') ? '🙈' : '👁' }}</button>
               <button v-if="formData.html2Password" @click="copyToClipboard(formData.html2Password, $event.target)" class="btn-copy">Copier</button>
             </span>
           </div>
@@ -231,7 +251,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, onUnmounted } from 'vue'
 import { db } from '../db/database'
 import { CryptoService } from '../services/crypto'
 import { AuthService } from '../services/auth'
@@ -246,7 +266,45 @@ const tagInput = ref('')
 const isLocked = ref(false)
 const isEditingSecret = ref(false)
 const isEditing = ref(false) // true when creating new record (no id)
+const visiblePasswords = ref(new Set()) // Tracks which passwords are currently visible
 let autoLockTimer = null
+
+// Toggle password visibility
+const togglePassword = (field) => {
+  if (visiblePasswords.value.has(field)) {
+    visiblePasswords.value.delete(field)
+  } else {
+    visiblePasswords.value.add(field)
+  }
+  visiblePasswords.value = new Set(visiblePasswords.value) // Trigger reactivity
+}
+
+// Hide all visible passwords when clicking outside
+const hideAllPasswords = () => {
+  if (visiblePasswords.value.size > 0) {
+    visiblePasswords.value = new Set()
+  }
+}
+
+// Watch for clicks outside password fields
+let clickHandler = null
+const setupClickHandler = () => {
+  clickHandler = (e) => {
+    // If clicked on a toggle button, do nothing (togglePassword handles it)
+    if (e.target.closest('.password-toggle')) {
+      return
+    }
+    // Otherwise hide all visible passwords
+    hideAllPasswords()
+  }
+  document.addEventListener('click', clickHandler)
+}
+
+const removeClickHandler = () => {
+  if (clickHandler) {
+    document.removeEventListener('click', clickHandler)
+  }
+}
 
 onMounted(async () => {
   const id = route.params.id
@@ -268,6 +326,11 @@ onMounted(async () => {
   }
 
   setupAutoLock()
+  setupClickHandler()
+})
+
+onUnmounted(() => {
+  removeClickHandler()
 })
 
 const resetFormData = () => {
@@ -307,8 +370,26 @@ const decryptSecrets = async () => {
   for (const field of secrets) {
     if (formData[field] && typeof formData[field] === 'string') {
       try {
-        const { ciphertext, iv } = JSON.parse(formData[field])
-        formData[field] = await CryptoService.decrypt(ciphertext, new Uint8Array(iv), key)
+        const parsed = JSON.parse(formData[field])
+        
+        // Handle both base64 and array formats for backwards compatibility
+        let ciphertextBuf
+        let ivBuf
+        
+        // Check if base64
+        if (typeof parsed.ciphertext === 'string' && !Array.isArray(parsed.ciphertext)) {
+          const ciphertextBytes = Uint8Array.from(atob(parsed.ciphertext), c => c.charCodeAt(0))
+          ciphertextBuf = ciphertextBytes.buffer
+          const ivBytes = Uint8Array.from(atob(parsed.iv), c => c.charCodeAt(0))
+          ivBuf = ivBytes
+        } else if (Array.isArray(parsed.ciphertext)) {
+          // Old format: array of bytes
+          const ciphertextBytes = new Uint8Array(parsed.ciphertext)
+          ciphertextBuf = ciphertextBytes.buffer.slice(ciphertextBytes.byteOffset, ciphertextBytes.byteOffset + ciphertextBytes.byteLength)
+          ivBuf = new Uint8Array(parsed.iv)
+        }
+        
+        formData[field] = await CryptoService.decrypt(ciphertextBuf, ivBuf, key)
       } catch (e) {
         console.error('Decryption failed for', field, e)
       }
@@ -355,7 +436,10 @@ const saveRecord = async () => {
   for (const field of secrets) {
     if (formData[field]) {
       const { ciphertext, iv } = await CryptoService.encrypt(formData[field], key)
-      formData[field] = JSON.stringify({ ciphertext, iv })
+      // Convert to base64 for reliable JSON storage
+      const ciphertextBase64 = btoa(String.fromCharCode(...new Uint8Array(ciphertext)))
+      const ivBase64 = btoa(String.fromCharCode(...new Uint8Array(iv)))
+      formData[field] = JSON.stringify({ ciphertext: ciphertextBase64, iv: ivBase64 })
     }
   }
 
@@ -401,8 +485,8 @@ const deleteRecord = async () => {
 
 <style scoped>
 .page {
-  padding: 2rem;
-  max-width: 800px;
+  padding: 1.5rem;
+  max-width: 900px;
   margin: 0 auto;
 }
 .header {
@@ -410,20 +494,46 @@ const deleteRecord = async () => {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--border-color);
+}
+.header h1 {
+  color: #ffffff;
+  font-size: 1.8rem;
+  margin: 0;
 }
 .form-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
 }
 .field {
   display: flex;
   flex-direction: column;
-  margin-bottom: 1rem;
+  min-width: 0;
 }
 .field label {
   margin-bottom: 0.5rem;
-  font-weight: bold;
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 0.95rem;
+}
+.field > div,
+.field > span {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.password-field {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.password-field input {
+  flex: 1;
+  min-width: 120px;
 }
 .tag-chips {
   display: flex;
@@ -436,6 +546,7 @@ const deleteRecord = async () => {
   padding: 2px 8px;
   border-radius: 4px;
   font-size: 0.8rem;
+  color: white;
 }
 .tag-remove {
   background: none;
@@ -443,25 +554,77 @@ const deleteRecord = async () => {
   color: white;
   cursor: pointer;
   margin-left: 4px;
+  padding: 0 4px;
+  font-size: 0.9rem;
 }
 .btn-copy {
-  margin-left: 0.5rem;
-  padding: 0 5px;
-  font-size: 0.7rem;
+  margin: 0;
+  padding: 0 10px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  height: 36px;
+  white-space: nowrap;
+}
+.password-toggle {
+  margin: 0;
+  padding: 0 8px;
+  font-size: 1.1rem;
+  height: 36px;
+  width: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+}
+.password-toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
 }
 .btn-success { background: #2e7d32; }
 .btn-danger { background: #c62828; }
 .btn-edit { background: #f57c00; }
 .divider {
   border: 0;
-  border-top: 1px solid var(--border-color);
+  border-top: 2px solid var(--border-color);
   margin: 2rem 0;
 }
 .section-title {
   margin-bottom: 1rem;
+  color: #ffffff;
+  font-size: 1.3rem;
 }
 .empty-state {
   text-align: center;
   padding: 4rem;
+  color: #ffffff;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .page {
+    padding: 1rem;
+  }
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .header h1 {
+    font-size: 1.5rem;
+  }
+  .field > div,
+  .field > span,
+  .password-field {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .btn-copy,
+  .password-toggle {
+    width: 100%;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .form-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 </style>
