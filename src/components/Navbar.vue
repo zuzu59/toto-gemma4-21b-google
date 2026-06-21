@@ -12,6 +12,10 @@
           @input="handleSearch"
         />
       </div>
+      <div class="status-indicator">
+        <span class="status-dot" :class="{ 'online': isOnline, 'offline': !isOnline }"></span>
+        <span class="status-text">{{ isOnline ? 'Connecté' : 'Hors ligne' }}</span>
+      </div>
       <button @click="toggleDrawer" class="hamburger">
         <span v-if="!isDrawerOpen">☰</span>
         <span v-else>✕</span>
@@ -31,10 +35,11 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 
 const isDrawerOpen = ref(false)
 const searchQuery = ref('')
+const isOnline = ref(navigator.onLine)
 
 const toggleDrawer = () => {
   isDrawerOpen.value = !isDrawerOpen.value
@@ -43,6 +48,19 @@ const toggleDrawer = () => {
 const handleSearch = () => {
   // To be implemented: global search logic
 }
+
+const handleOnline = () => { isOnline.value = true }
+const handleOffline = () => { isOnline.value = false }
+
+onMounted(() => {
+  window.addEventListener('online', handleOnline)
+  window.addEventListener('offline', handleOffline)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('online', handleOnline)
+  window.removeEventListener('offline', handleOffline)
+})
 
 const handleResetFactory = () => {
   if (confirm('⚠ ATTENTION : toutes les données seront supprimées définitivement (services, tags, outils, mots de passe). Continuer ?')) {
@@ -84,6 +102,40 @@ const handleResetFactory = () => {
   display: flex;
   align-items: center;
   gap: 1rem;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  background: #222;
+  border: 1px solid var(--border-color);
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.status-dot.online {
+  background: #4caf50;
+  box-shadow: 0 0 6px #4caf50;
+}
+
+.status-dot.offline {
+  background: #f44336;
+  box-shadow: 0 0 6px #f44336;
+}
+
+.status-text {
+  white-space: nowrap;
 }
 
 .search-container {
